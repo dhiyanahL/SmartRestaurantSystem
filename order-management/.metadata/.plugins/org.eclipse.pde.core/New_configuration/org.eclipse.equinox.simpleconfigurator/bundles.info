@@ -1,6 +1,7 @@
 #encoding=UTF-8
 #version=1
 OrderManagementOsgi,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/OrderManagementOsgi/,4,true
+OrderManagementOsgiConsumer,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/OrderManagementOsgiConsumer/,4,true
 bcpg,1.79.0,file:/D:/eclipse-jee-2024-12-R-win32-x86_64(1)/eclipse/plugins/bcpg_1.79.0.jar,4,true
 bcpkix,1.79.0,file:/D:/eclipse-jee-2024-12-R-win32-x86_64(1)/eclipse/plugins/bcpkix_1.79.0.jar,4,true
 bcprov,1.79.0,file:/D:/eclipse-jee-2024-12-R-win32-x86_64(1)/eclipse/plugins/bcprov_1.79.0.jar,4,true
