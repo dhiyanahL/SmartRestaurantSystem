@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OrderManagementOsgiPublisher
+Bundle-SymbolicName: OrderManagementOsgiPublisher
+Bundle-Version: 1.0.0.qualifier
+Import-Package: org.osgi.framework;version="1.10.0"
+Automatic-Module-Name: OrderManagementOsgiPublisher
+Bundle-RequiredExecutionEnvironment: JavaSE-21
