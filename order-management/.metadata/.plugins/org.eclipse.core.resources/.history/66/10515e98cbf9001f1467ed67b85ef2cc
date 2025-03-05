@@ -1,0 +1,5 @@
+package ordermanagementosgi;
+
+public class OrderServiceImpl {
+
+}
