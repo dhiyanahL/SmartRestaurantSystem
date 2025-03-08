@@ -1,0 +1,133 @@
+package reservationconsumer;
+
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
+import reservationprovider.ReservationService;
+
+import java.util.InputMismatchException;
+import java.util.List;  
+import java.util.Scanner;
+
+public class ReservationConsumerActivator implements BundleActivator {
+    
+    private Scanner scanner = new Scanner(System.in);
+    
+    public void start(BundleContext context) throws Exception {
+        ServiceReference<?> reference = context.getServiceReference(ReservationService.class.getName());
+        if (reference == null) {
+            System.out.println("Reservation Service Not Found!");
+            return;
+        }
+        
+        ReservationService reservationService = (ReservationService) context.getService(reference);
+        
+        while (true) {
+            int choice = -1;
+        
+            while (true) {
+                try {
+                    System.out.println("\n🔹 What would you like to do?");
+                    System.out.println("1️⃣ Create a Reservation");
+                    System.out.println("2️⃣ Update a Reservation");
+                    System.out.println("3️⃣ Cancel a Reservation");
+                    System.out.println("4️⃣ Check a Reservation");
+                    System.out.println("5️⃣ View All Reservations"); // 🔹 CHANGED (Added Option)
+                    System.out.println("6️⃣ Exit");
+                    System.out.print("Enter choice: ");
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    if (choice >= 1 && choice <= 6) break;
+                    System.out.println("Invalid choice! Please enter a number between 1-6."); 
+                } catch (InputMismatchException e) { 
+                    System.out.println("Invalid input! Please enter a number.");
+                    scanner.nextLine();
+                }
+            }
+
+            if (choice == 6) break;
+
+            if (choice == 5) { // 🔹 CHANGED (View All Reservations)
+                List<reservationprovider.Reservation> allReservations = reservationService.getAllReservations();
+                if (allReservations.isEmpty()) {
+                    System.out.println("No reservations available.");
+                } else {
+                    System.out.println("Current Reservations:");
+                    for (reservationprovider.Reservation r : allReservations) {
+                        System.out.println(r);
+                    }
+                }
+                continue;
+            }
+
+            System.out.print("Enter your name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter your phone number: ");
+            String phone = scanner.nextLine();
+
+            if (choice == 1) { 
+                System.out.print("Enter number of seats: ");
+                int seats = scanner.nextInt();
+                scanner.nextLine();
+                System.out.print("Enter date (YYYY-MM-DD): ");
+                String date = scanner.nextLine();
+                System.out.print("Enter meal (breakfast/lunch/dinner): ");
+                String meal = scanner.nextLine();
+                int tableAssigned = reservationService.makeReservation(name, phone, seats, date, meal);
+                
+                if (tableAssigned != -1) {
+                    System.out.println("Reservation Successful: " + name + " | Phone No.: " + phone + 
+                                       " | Table: " + tableAssigned + " | Seats: " + seats + 
+                                       " | Date: " + date + " | Meal: " + meal);
+                } else {
+                    System.out.println("No available table.");
+                }
+                
+            } else if (choice == 2) { 
+                System.out.print("Enter new number of seats: ");
+                int seats = scanner.nextInt();
+                scanner.nextLine();
+                System.out.print("Enter new date (YYYY-MM-DD): ");
+                String date = scanner.nextLine();
+                System.out.print("Enter new meal (breakfast/lunch/dinner): ");
+                String meal = scanner.nextLine();
+                boolean updated = reservationService.updateReservation(name, phone, seats, date, meal);
+                
+                if (updated) {
+                    System.out.println("Reservation updated!");
+                    System.out.println(reservationService.checkReservation(name, phone));
+                } else {
+                    System.out.println("Update failed.");
+                }
+                
+            } else if (choice == 3) {  
+                String reservationDetails = reservationService.checkReservation(name, phone);
+                
+                if (reservationDetails.equals("No reservation found.")) {
+                    System.out.println(reservationDetails);
+                } else {
+                    System.out.println("\nYour current reservation:");
+                    System.out.println(reservationDetails);
+                    System.out.println("\nAre you sure you want to cancel your reservation? (Y/N)");
+                    
+                    String confirmation = scanner.nextLine();
+                    if (confirmation.equalsIgnoreCase("Y")) {
+                        boolean cancelled = reservationService.cancelReservation(name, phone);
+                        System.out.println(cancelled ? "Reservation canceled!" : "Cancellation failed.");
+                    } else {
+                        System.out.println("Cancellation aborted.");
+                    }
+                }
+                
+            } else if (choice == 4) { 
+                System.out.println(reservationService.checkReservation(name, phone));
+            }
+        }
+    }
+
+    public void stop(BundleContext context) throws Exception {
+        System.out.println("Reservation Consumer Stopped.");
+    }
+}

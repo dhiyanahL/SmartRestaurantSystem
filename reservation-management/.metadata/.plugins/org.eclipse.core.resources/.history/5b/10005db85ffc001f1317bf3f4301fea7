@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ReservationServiceConsumer
+Bundle-SymbolicName: ReservationServiceConsumer
+Bundle-Version: 1.0.0.qualifier
+Import-Package: org.osgi.framework,
+ reservationprovider
+Automatic-Module-Name: ReservationServiceConsumer
+Bundle-Activator: reservationconsumer.ReservationConsumerActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-17
