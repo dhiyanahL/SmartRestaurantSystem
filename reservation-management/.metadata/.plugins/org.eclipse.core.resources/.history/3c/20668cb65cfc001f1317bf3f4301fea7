@@ -1,5 +1,0 @@
-package reservationprovider;
-
-public interface ReservationService {
-
-}
