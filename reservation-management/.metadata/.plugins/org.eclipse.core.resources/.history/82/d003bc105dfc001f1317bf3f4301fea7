@@ -1,0 +1,5 @@
+package reservationprovider;
+
+public class Reservation {
+
+}

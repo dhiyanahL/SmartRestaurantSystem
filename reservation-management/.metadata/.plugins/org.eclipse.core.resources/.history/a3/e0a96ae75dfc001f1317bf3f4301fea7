@@ -1,0 +1,11 @@
+package reservationprovider;
+
+public class Table {
+    int tableNumber;
+    int seatingCapacity;
+
+    public Table(int tableNumber, int seatingCapacity) {
+        this.tableNumber = tableNumber;
+        this.seatingCapacity = seatingCapacity;
+    }
+}
