@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RestockService
+Bundle-SymbolicName: RestockService
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.inventory.consumer.RestockService
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: RestockService
+Import-Package: com.inventory.service,
+ org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy

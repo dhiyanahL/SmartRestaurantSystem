@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ReservationServiceConsumer
+Bundle-SymbolicName: ReservationServiceConsumer
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: ReservationServiceConsumer
+Bundle-RequiredExecutionEnvironment: JavaSE-17
