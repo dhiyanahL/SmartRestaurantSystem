@@ -4,10 +4,15 @@ import java.util.List;
 
 public interface OrderService {
 	
-	void createOrder(Order order);
-    List<Order> getAllOrders();
-    Order getOrderById(int id);
-    boolean updateOrder(int id, Order updatedOrder);
-    boolean deleteOrder(int id);
+	void createDineInOrder(DineInOrder dineInOrder);
+	void createDeliveryOrder(DeliveryOrder deleDeliveryOrder);
+    List<DineInOrder> getDineInOrders();
+    List<DeliveryOrder> getDeliveryOrders();
+    DineInOrder getOrderByDineInId(int id);
+    DeliveryOrder getOrderByDeliveryId(int id);
+    boolean updateDineInOrder(int id, DineInOrder updatedOrder);
+    boolean updateDeliveryOrder(int id, DeliveryOrder updaDeliveryOrder);
+    boolean deleteDineInOrder(int id);
+    boolean deleteDeliveryOrder(int id);
 
 }
