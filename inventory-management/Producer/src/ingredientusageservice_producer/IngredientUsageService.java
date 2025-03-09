@@ -1,6 +1,6 @@
 package ingredientusageservice_producer;
 
-//Hi there
+
 
 public interface IngredientUsageService {
 	void useIngredient(String ingredient,int quantity);
@@ -8,6 +8,7 @@ public interface IngredientUsageService {
 	void updateIngredient(String ingredient, int quantity);
 	void deleteIngredient(String ingredient);
 	int getIngredient(String name);
+	void initializeStock();
 	
 
 }

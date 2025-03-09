@@ -21,6 +21,13 @@ public class RestockService implements BundleActivator {
 				//Get reference to IngredientUsageService
 				ingredientServiceRef = context.getServiceReference(IngredientUsageService.class.getName());
 				
+				
+				// Debug message before calling initializeStock
+			    System.out.println("Initializing stock...");
+				 // Initialize stock when the service starts
+		        ingredientUsageService.initializeStock(); // This will print the "Stock initialized with hardcoded values." message
+
+				
 				if(ingredientServiceRef != null) {
 					ingredientUsageService = (IngredientUsageService) context.getService(ingredientServiceRef);
 					System.out.println("Connected to IngredientUsageService!");

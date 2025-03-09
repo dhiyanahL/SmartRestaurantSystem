@@ -7,6 +7,24 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
 	
 	
 	private Map<String, Integer> ingredientStock = new HashMap<>();
+	
+	// Constructor to initialize some hardcoded ingredient stock
+    public IngredientUsageServiceImp() {
+        initializeStock();
+    }
+
+    private void initializeStock() {
+        // Hardcoded inventory items with initial quantities
+        ingredientStock.put("Pasta", 100); // 100 units of Pasta
+        ingredientStock.put("Tomato Sauce", 50); // 50 units of Tomato Sauce
+        ingredientStock.put("Cheese", 30); // 30 units of Cheese
+        ingredientStock.put("Olives", 20); // 20 units of Olives
+        ingredientStock.put("Chicken", 60); // 60 units of Chicken
+        ingredientStock.put("Garlic", 80); // 80 units of Garlic
+        ingredientStock.put("Spinach", 40); // 40 units of Spinach
+
+        System.out.println("Ingredient stock initialized.");
+    }
 
 	@Override
 	public void useIngredient(String ingredient, int quantity) {
