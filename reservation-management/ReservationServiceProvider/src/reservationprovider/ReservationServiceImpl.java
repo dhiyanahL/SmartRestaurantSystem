@@ -81,7 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
                 Reservation updatedReservation = new Reservation(customerName, phone, table.getTableNumber(), newSeats, newDate, newMeal);
                 reservations.add(updatedReservation);
 
-                System.out.println("Reservation successfully updated: " + updatedReservation);
+                //System.out.println("Reservation successfully updated: " + updatedReservation);
                 return true;
             }
         }
