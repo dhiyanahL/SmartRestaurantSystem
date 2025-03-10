@@ -3,10 +3,10 @@ package ordermanagementosgiconsumer;
 import ordermanagementosgi.OrderService;
 import ordermanagementosgi.DineInOrder;
 import ordermanagementosgi.DeliveryOrder;
+import reservationmanagementosgi.ReservationService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +14,7 @@ public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	private ServiceReference<?> serviceReference;
+	private ServiceReference<?> reservationServiceReference;
 
 	static BundleContext getContext() {
 		return context;
@@ -22,10 +23,16 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		System.out.println("🔍 Searching for OrderService...");
         serviceReference = bundleContext.getServiceReference(OrderService.class.getName());
+        reservationServiceReference = bundleContext.getServiceReference(ReservationService.class.getName());
+        System.out.println(reservationServiceReference);
+       
+        
 
-        if (serviceReference != null) {
+        if (serviceReference != null && reservationServiceReference != null) {
             OrderService orderService = (OrderService) bundleContext.getService(serviceReference);
             System.out.println("✅ OrderService Found!");
+            
+          ReservationService reservationService =(ReservationService) bundleContext.getService(reservationServiceReference);
 
             Scanner scanner = new Scanner(System.in);
 
@@ -58,8 +65,12 @@ public class Activator implements BundleActivator {
                          String name = scanner.nextLine();
                          System.out.println("Enter Contact No : ");
                          String contact = scanner.nextLine();
-                         System.out.println("Enter Table No");
-                         int table = scanner.nextInt();
+                         
+                         System.out.println("Enter The Number Of Pax");
+                         int pax = scanner.nextInt();
+                         System.out.println("🥄 Searching For Tables");
+                         int table = reservationService.availableTable(pax);
+                         
                          orderService.createDineInOrder(new DineInOrder(0, itemName, quantity,name,contact,table));
                          break;
                     case 2:

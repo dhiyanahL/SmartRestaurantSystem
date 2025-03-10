@@ -7,6 +7,7 @@ Bundle-Activator: ordermanagementosgiconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: OrderManagementOsgiConsumer
 Import-Package: org.osgi.framework;version="1.3.0"
-Require-Bundle: OrderManagementOsgi;bundle-version="1.0.0"
+Require-Bundle: OrderManagementOsgi;bundle-version="1.0.0",
+ ReservationManagementOsgi;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 
