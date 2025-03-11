@@ -9,12 +9,13 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
     private Map<String, Map<String, Integer>> dishIngredients = new HashMap<>(); // Dish-to-ingredients mapping
 
     public IngredientUsageServiceImp() {
-    	initializeStock();
-        initializeDishIngredients();
+    	initializeStock(); // hard coded values for ingredients 
+        initializeDishIngredients(); // hard coded values for dish ingredients
     }
 	
-    // Define dishes and required ingredients
+    // Define the dishes and their  required ingredients
     private void initializeDishIngredients() {
+    	//As of now, 2 dishes - Chicken Pizza and Pasta
         Map<String, Integer> pastaIngredients = new HashMap<>();
         pastaIngredients.put("Pasta", 1);
         pastaIngredients.put("Tomato Sauce", 2);
@@ -32,14 +33,15 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
     
     @Override
 	public void initializeStock() {
-    	ingredientStock.put("Pasta", 10);
-        ingredientStock.put("Tomato Sauce", 10);
-        ingredientStock.put("Cheese", 10);
-        ingredientStock.put("Chicken", 10);
-        ingredientStock.put("Garlic", 10);
+    	ingredientStock.put("Pasta", 14);
+        ingredientStock.put("Tomato Sauce", 60);
+        ingredientStock.put("Cheese", 15);
+        ingredientStock.put("Chicken", 30);
+        ingredientStock.put("Garlic", 20);
 		
 	}
     
+    //To be used by order management 
     @Override
 	public boolean checkIngredientsForDish(String dishName) {
     	if (!dishIngredients.containsKey(dishName)) {
@@ -79,6 +81,7 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
         System.out.println("✅ Ingredients deducted for " + dishName);
 	}
     
+    //Ingredients CRUD
 	@Override
 	public void useIngredient(String ingredient, int quantity) {
 		ingredientStock.put(ingredient, ingredientStock.getOrDefault(ingredient, 0) - quantity);

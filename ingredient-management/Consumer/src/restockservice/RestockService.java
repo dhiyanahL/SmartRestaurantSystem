@@ -30,7 +30,8 @@ public class RestockService implements BundleActivator {
 
             int choice;
             do {
-                System.out.println("\n****** Inventory Management Menu *****");
+            	System.out.println("=========================================");
+                System.out.println("\n****** Ingredient Management Menu ******");
                 System.out.println("1. Add Ingredient");
                 System.out.println("2. Update Ingredient Stock");
                 System.out.println("3. Use Ingredient");
@@ -41,7 +42,7 @@ public class RestockService implements BundleActivator {
                 System.out.print("Enter your choice: ");
 
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine(); 
 
                 switch (choice) {
                     case 1: // Add ingredient
@@ -69,7 +70,7 @@ public class RestockService implements BundleActivator {
                         break;
 
                     case 7:
-                        System.out.println("Exiting Inventory Management...");
+                        System.out.println("Exiting Ingredient Management...");
                         break;
 
                     default:
@@ -96,10 +97,11 @@ public class RestockService implements BundleActivator {
 
         System.out.print("Enter quantity to add: ");
         int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
 
         ingredientUsageService.addIngredient(ingredient, quantity);
         System.out.println(ingredient + " added! New stock: " + ingredientUsageService.getIngredient(ingredient));
+        System.out.println("=========================================");
     }
 
     private void updateIngredient() {
@@ -108,10 +110,11 @@ public class RestockService implements BundleActivator {
 
         System.out.print("Enter new quantity: ");
         int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
 
         ingredientUsageService.updateIngredient(ingredient, quantity);
         System.out.println(ingredient + " stock updated! New stock: " + ingredientUsageService.getIngredient(ingredient));
+        System.out.println("=========================================");
     }
 
     private void useIngredient() {
@@ -120,10 +123,11 @@ public class RestockService implements BundleActivator {
 
         System.out.print("Enter quantity to use: ");
         int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
 
         ingredientUsageService.useIngredient(ingredient, quantity);
         System.out.println("Used " + quantity + " of " + ingredient + ". Remaining stock: " + ingredientUsageService.getIngredient(ingredient));
+        System.out.println("=========================================");
     }
 
     private void deleteIngredient() {
@@ -132,14 +136,16 @@ public class RestockService implements BundleActivator {
 
         ingredientUsageService.deleteIngredient(ingredient);
         System.out.println(ingredient + " removed from inventory.");
+        System.out.println("=========================================");
     }
 
-    private void checkStock() {
+    private void checkStock() { //checks how much of stock is left 
         System.out.print("Enter ingredient name: ");
         String ingredient = scanner.nextLine();
 
         int stock = ingredientUsageService.getIngredient(ingredient);
         System.out.println("Current stock of " + ingredient + ": " + stock + " units.");
+        System.out.println("=========================================");
     }
 
     private void restockIngredient() {
@@ -153,12 +159,14 @@ public class RestockService implements BundleActivator {
 
             System.out.print("Enter restock quantity: ");
             int restockQuantity = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             ingredientUsageService.addIngredient(ingredient, restockQuantity);
             System.out.println(ingredient + " restocked! New stock: " + ingredientUsageService.getIngredient(ingredient));
+            System.out.println("=========================================");
         } else {
             System.out.println(ingredient + " stock is sufficient. Current stock: " + currentStock);
+            System.out.println("=========================================");
         }
     }
 

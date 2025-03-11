@@ -9,7 +9,7 @@ public class Activator implements BundleActivator {
 	private ServiceRegistration<?> serviceRegistration;
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Inventory Management Producer (IngredientUsageService) Starting...");
+		System.out.println("Ingredient Management Producer (IngredientUsageService) Starting...");
 		
 		//Create and register the service
 		IngredientUsageService service = new IngredientUsageServiceImp();
