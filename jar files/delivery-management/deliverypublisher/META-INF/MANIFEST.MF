@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Deliverypublisher
+Bundle-SymbolicName: deliverypublisher
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: deliverypublisher.DeliveryPublisherActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: deliverypublisher
+Import-Package: deliveryapi,
+ ordermanagementosgi,
+ org.osgi.framework;version="1.3.0"
+Export-Package: deliverypublisher
