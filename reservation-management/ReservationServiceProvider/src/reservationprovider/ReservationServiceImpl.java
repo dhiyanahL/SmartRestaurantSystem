@@ -24,15 +24,40 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public int makeReservation(String customerName, String phone, int requiredSeats, String date, String meal) {
+        // Check if a single table can fit
         for (Table table : tables) {
-            if (table.seatingCapacity >= requiredSeats && !isTableBooked(table.getTableNumber(), date, meal)) {
+            if (table.getSeatingCapacity() >= requiredSeats && !isTableBooked(table.getTableNumber(), date, meal)) {
                 Reservation reservation = new Reservation(customerName, phone, table.getTableNumber(), requiredSeats, date, meal);
                 reservations.add(reservation);
                 return table.getTableNumber();
             }
         }
+
+        //If no single table is available, try to combine two smaller tables
+        for (Table table1 : tables) {
+            for (Table table2 : tables) {
+                if (table1 != table2 && table1.getSeatingCapacity() + table2.getSeatingCapacity() >= requiredSeats
+                    && !isTableBooked(table1.getTableNumber(), date, meal)
+                    && !isTableBooked(table2.getTableNumber(), date, meal)) {
+
+                    // Assign both tables to the user
+                    Reservation reservation1 = new Reservation(customerName, phone, table1.getTableNumber(), table1.getSeatingCapacity(), date, meal);
+                    Reservation reservation2 = new Reservation(customerName, phone, table2.getTableNumber(), table2.getSeatingCapacity(), date, meal);
+
+                    reservations.add(reservation1);
+                    reservations.add(reservation2);
+
+                    System.out.println("Reservation Successful! Combined Tables: " + table1.getTableNumber() + " & " + table2.getTableNumber());
+                    return 1000 + table1.getTableNumber() + table2.getTableNumber(); // Special code to indicate table combination
+                }
+            }
+        }
+
+        //If no table or table combination works, return failure
+        System.out.println("No available tables for " + requiredSeats + " seats on " + date + " (" + meal + ").");
         return -1;
     }
+
 
     private boolean isTableBooked(int tableNumber, String date, String meal) {
         for (Reservation r : reservations) {
@@ -87,7 +112,7 @@ public class ReservationServiceImpl implements ReservationService {
                 Reservation updatedReservation = new Reservation(customerName, phone, table.getTableNumber(), newSeats, newDate, newMeal);
                 reservations.add(updatedReservation);
 
-                System.out.println("Reservation successfully updated: " + updatedReservation);
+                //System.out.println("Reservation successfully updated: " + updatedReservation);
                 return true;
             }
         }
