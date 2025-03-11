@@ -165,6 +165,8 @@ public class Activator implements BundleActivator {
                     default:
                         System.out.println("❌ Invalid choice. Try again.");
                 }
+                
+                scanner.close();
             }
         } else {
             System.out.println("❌ OrderService Not Found in OSGi Registry.");
