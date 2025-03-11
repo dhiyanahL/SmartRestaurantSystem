@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ReservationServiceImpl implements ReservationService {
     
-    private List<Reservation> reservations = new ArrayList<>();
+   /* private List<Reservation> reservations = new ArrayList<>();
     private List<Table> tables = new ArrayList<>();
     
     public ReservationServiceImpl() {
@@ -14,6 +14,12 @@ public class ReservationServiceImpl implements ReservationService {
         tables.add(new Table(3, 4));
         tables.add(new Table(4, 6));
         tables.add(new Table(5, 8));
+        tables.add(new Table(6, 1));
+        tables.add(new Table(7, 1));
+        tables.add(new Table(8, 3));
+        tables.add(new Table(9, 3));
+        tables.add(new Table(10, 3));
+        
     }
 
     @Override
@@ -93,5 +99,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> getAllReservations() {
         return reservations;
-    }
+    }*/
+
+	@Override
+	public int getTableNo(int numberOfPerson) {
+	
+		return 2;
+	}
+
+	
+
+	
+
+	
 }

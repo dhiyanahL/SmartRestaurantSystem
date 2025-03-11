@@ -89,7 +89,7 @@ public class DeliveryOrder {
                "\nQuantity: " + quantity +
                "\nCustomer Name: " + customerName +
                "\nContact No: " + phone +
-               "\nTable No: " + address;
+               "\nDelivery Address: " + address;
     }
 	
 	

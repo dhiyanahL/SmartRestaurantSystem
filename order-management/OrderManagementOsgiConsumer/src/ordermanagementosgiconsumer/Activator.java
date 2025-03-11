@@ -24,7 +24,7 @@ public class Activator implements BundleActivator {
 		System.out.println("🔍 Searching for OrderService...");
         serviceReference = bundleContext.getServiceReference(OrderService.class.getName());
         reservationServiceReference = bundleContext.getServiceReference(ReservationService.class.getName());
-        System.out.println(reservationServiceReference);
+        
        
         
 
@@ -130,7 +130,8 @@ public class Activator implements BundleActivator {
                     	int dineInOrderToUpdate = scanner.nextInt();
                     	DineInOrder updatedDineIn = new DineInOrder(dineInOrderToUpdate, "Pasta", 3, "Sachini", "0776967831", 30);
                         boolean dineInUpdated = orderService.updateDineInOrder(dineInOrderToUpdate, updatedDineIn);
-                        System.out.println(dineInUpdated ? "✅ Dine-In Order Updated." : "❌ Dine-In Order not found.");
+                        DineInOrder updatedDineInOrder = orderService.getOrderByDineInId(dineInOrderToUpdate);
+                        System.out.println(dineInUpdated ? updatedDineInOrder : "❌ Dine-In Order not found.");
                         break;
                         
                     case 8:
@@ -139,7 +140,8 @@ public class Activator implements BundleActivator {
                     	int deliveryOrderToUpdate = scanner.nextInt();
                     	DeliveryOrder updatedDelivery = new DeliveryOrder(deliveryOrderToUpdate, "Sushi", 2, "Gayathma", "0776435190", "456 Main St");
                         boolean deliveryUpdated = orderService.updateDeliveryOrder(deliveryOrderToUpdate, updatedDelivery);
-                        System.out.println(deliveryUpdated ? "✅ Delivery Order Updated." : "❌ Delivery Order not found.");
+                        DeliveryOrder updatedDeliveryOrder = orderService.getOrderByDeliveryId(deliveryOrderToUpdate);
+                        System.out.println(deliveryUpdated ? updatedDeliveryOrder : "❌ Delivery Order not found.");
                         break;
                         
                     case 9:
