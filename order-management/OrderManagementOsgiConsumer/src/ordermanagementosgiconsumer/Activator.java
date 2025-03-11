@@ -162,6 +162,14 @@ public class Activator implements BundleActivator {
 				        	
 				        case 11:
 				            System.out.println("👋 Exiting Order Management.");
+                        		// Fetch the delivery orders only after exiting
+                        		List<DeliveryOrder> deliveryOrder = orderService.getDeliveryOrders();
+                        		if (deliveryPublisher != null) {
+                            		((DeliveryPublisherImpl) deliveryPublisher).setDeliveryOrders(deliveryOrder);  // Set the delivery orders
+                           		 deliveryPublisher.deliverOrder();  // Trigger delivery
+                        		} else {
+                            		System.out.println("❌ DeliveryPublisher is not available.");
+                        		}
 				            return;
 				        default:
 				            System.out.println("❌ Invalid choice. Try again.");
