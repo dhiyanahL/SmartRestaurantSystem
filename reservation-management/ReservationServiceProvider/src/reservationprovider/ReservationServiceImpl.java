@@ -41,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
                     reservations.add(reservation1);
                     reservations.add(reservation2);
 
-                    System.out.println("✅ Reservation Successful! Combined Tables: " + table1.getTableNumber() + " & " + table2.getTableNumber());
+                    System.out.println("Reservation Successful! Combined Tables: " + table1.getTableNumber() + " & " + table2.getTableNumber());
                     return 1000 + table1.getTableNumber() + table2.getTableNumber(); // Special code to indicate table combination
                 }
             }
