@@ -89,12 +89,22 @@ public class ReservationConsumerActivator implements BundleActivator {
 
                 int tableAssigned = reservationService.makeReservation(name, phone, seats, date, meal);
                 
-                if (tableAssigned != -1) {
+                if (tableAssigned > 0 && tableAssigned < 1000) {
                     System.out.println("\nReservation Successful!");
                     System.out.println("=============================================");
                     System.out.println("Name: " + name);
                     System.out.println("Phone: " + phone);
                     System.out.println("Table: " + tableAssigned);
+                    System.out.println("Seats: " + seats);
+                    System.out.println("Date: " + date);
+                    System.out.println("Meal: " + meal);
+                    System.out.println("=============================================");
+                } else if (tableAssigned >= 1000) {
+                    System.out.println("\nReservation Successful! Your seating is split across combined tables.");
+                    System.out.println("=============================================");
+                    System.out.println("Name: " + name);
+                    System.out.println("Phone: " + phone);
+                    System.out.println("Combined Tables Assigned.");
                     System.out.println("Seats: " + seats);
                     System.out.println("Date: " + date);
                     System.out.println("Meal: " + meal);
