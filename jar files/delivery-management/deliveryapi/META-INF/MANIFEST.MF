@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Deliveryapi
-Bundle-SymbolicName: deliveryapi
-Bundle-Version: 1.0.0.qualifier
-Automatic-Module-Name: deliveryapi
-Bundle-RequiredExecutionEnvironment: JavaSE-21
-Export-Package: deliveryapi
-Import-Package: ordermanagementosgi
