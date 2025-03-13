@@ -1,6 +1,7 @@
-package reservationprovider;
+package reservationmanagementosgi;
 
 public class Reservation {
+	
     private String customerName;
     private String phone;
     private int tableNumber;
@@ -46,5 +47,5 @@ public class Reservation {
         return "Reservation for " + customerName + " at Table " + tableNumber + 
                " [Seats: " + requiredSeats + ", " + date + " " + meal + "]";
     }
-}
 
+}
