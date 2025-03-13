@@ -7,6 +7,8 @@ import reservationmanagementosgi.ReservationService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,6 +51,8 @@ public class Activator implements BundleActivator {
 				    System.out.println("10. Delete Delivery Order");
 				    System.out.println("11. Exit");
 				    System.out.print("Choose an option: ");
+				    
+				    reservationService.manageTables();
 
 				    int choice = scanner.nextInt();
 				    scanner.nextLine();  // Consume newline
@@ -68,7 +72,7 @@ public class Activator implements BundleActivator {
 				             System.out.println("Enter The Number Of Pax");
 				             int pax = scanner.nextInt();
 				             System.out.println("🥄 Searching For Tables");
-				             int table = reservationService.availableTable(pax);
+				             int table = reservationService.makeReservation(name, contact, pax, LocalDate.now().toString() ,itemName, quantity);
 				             
 				             orderService.createDineInOrder(new DineInOrder(0, itemName, quantity,name,contact,table));
 				             break;
