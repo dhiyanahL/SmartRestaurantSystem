@@ -1,5 +1,6 @@
 #encoding=UTF-8
 #version=1
+IngredientManagementOsgi,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/IngredientManagementOsgi/,4,true
 OrderManagementOsgi,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/OrderManagementOsgi/,4,true
 OrderManagementOsgiConsumer,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/OrderManagementOsgiConsumer/,4,true
 ReservationManagementOsgi,1.0.0.qualifier,file:/D:/SLIITThirdYear/firstSemester/SA/SmartRestaurantSystem/order-management/ReservationManagementOsgi/,4,true

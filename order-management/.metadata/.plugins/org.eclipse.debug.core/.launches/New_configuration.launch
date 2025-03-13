@@ -1034,6 +1034,7 @@
         <setEntry value="slf4j.simple@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
+        <setEntry value="IngredientManagementOsgi@default:default"/>
         <setEntry value="OrderManagementOsgi@default:default"/>
         <setEntry value="OrderManagementOsgiConsumer@default:default"/>
         <setEntry value="ReservationManagementOsgi@default:default"/>

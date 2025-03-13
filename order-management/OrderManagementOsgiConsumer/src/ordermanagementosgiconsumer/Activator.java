@@ -1,9 +1,11 @@
+
 package ordermanagementosgiconsumer;
 
 import ordermanagementosgi.OrderService;
 import ordermanagementosgi.DineInOrder;
 import ordermanagementosgi.DeliveryOrder;
 import reservationmanagementosgi.ReservationService;
+import ingredientmanagementosgi.IngredientUsageService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -17,6 +19,7 @@ public class Activator implements BundleActivator {
 	private static BundleContext context;
 	private ServiceReference<?> serviceReference;
 	private ServiceReference<?> reservationServiceReference;
+	private ServiceReference<?> ingredientServiceReference;
 
 	static BundleContext getContext() {
 		return context;
@@ -26,15 +29,17 @@ public class Activator implements BundleActivator {
 		System.out.println("🔍 Searching for OrderService...");
         serviceReference = bundleContext.getServiceReference(OrderService.class.getName());
         reservationServiceReference = bundleContext.getServiceReference(ReservationService.class.getName());
+        ingredientServiceReference = bundleContext.getServiceReference(IngredientUsageService.class.getName());
         
        
         
 
-        if (serviceReference != null && reservationServiceReference != null) {
+        if (serviceReference != null && reservationServiceReference != null  && ingredientServiceReference != null) {
             OrderService orderService = (OrderService) bundleContext.getService(serviceReference);
             System.out.println("✅ OrderService Found!");
             
           ReservationService reservationService =(ReservationService) bundleContext.getService(reservationServiceReference);
+          IngredientUsageService ingredientUsageService = (IngredientUsageService) bundleContext.getService(ingredientServiceReference);
 
             try (Scanner scanner = new Scanner(System.in)) {
 				while (true) {
@@ -61,6 +66,13 @@ public class Activator implements BundleActivator {
 				        case 1:
 				        	 System.out.print("Enter item name: ");
 				             String itemName = scanner.nextLine();
+				             boolean status =ingredientUsageService.checkIngredientsForDish(itemName);
+				             if(status == false) {
+				            	 
+				            	 System.out.println("We Are Sorry We are unable to procceed with your request since we don't have enpugh ingredients");
+				            	 break;
+				             }
+				             ingredientUsageService.useIngredientsForDish(itemName);
 				             System.out.print("Enter quantity: ");
 				             int quantity = scanner.nextInt();
 				             scanner.nextLine();
@@ -164,17 +176,7 @@ public class Activator implements BundleActivator {
 				            break;
 				        	
 				        	
-				        case 11:
-				            System.out.println("👋 Exiting Order Management.");
-                        		// Fetch the delivery orders only after exiting
-                        		List<DeliveryOrder> deliveryOrder = orderService.getDeliveryOrders();
-                        		if (deliveryPublisher != null) {
-                            		((DeliveryPublisherImpl) deliveryPublisher).setDeliveryOrders(deliveryOrder);  // Set the delivery orders
-                           		 deliveryPublisher.deliverOrder();  // Trigger delivery
-                        		} else {
-                            		System.out.println("❌ DeliveryPublisher is not available.");
-                        		}
-				            return;
+				       
 				        default:
 				            System.out.println("❌ Invalid choice. Try again.");
 				    }
