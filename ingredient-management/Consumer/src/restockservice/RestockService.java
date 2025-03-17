@@ -1,8 +1,9 @@
 package restockservice;
 
 import ingredientusageservice.IngredientUsageService;
-import java.util.Scanner;
 
+import ordermanagementosgi.*;
+import java.util.Scanner;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -11,6 +12,7 @@ public class RestockService implements BundleActivator {
 
 	  private ServiceReference<?> ingredientServiceRef;
 	  private IngredientUsageService ingredientUsageService;
+	 // private OrderService orderService;
 	  Scanner scanner = new Scanner(System.in);
 
 
@@ -19,6 +21,8 @@ public class RestockService implements BundleActivator {
 
         // Get reference to IngredientUsageService
         ingredientServiceRef = context.getServiceReference(IngredientUsageService.class.getName());
+       // orderService = (OrderService) context.getServiceReference(OrderService.class.getName());
+        
 
         if (ingredientServiceRef != null) {
             ingredientUsageService = (IngredientUsageService) context.getService(ingredientServiceRef);
@@ -27,6 +31,7 @@ public class RestockService implements BundleActivator {
             // Initialize stock when the service starts
             ingredientUsageService.initializeStock(); 
             System.out.println("Stock initialized successfully.");
+            
 
             int choice;
             do {
@@ -39,6 +44,7 @@ public class RestockService implements BundleActivator {
                 System.out.println("5. Check Ingredient Stock");
                 System.out.println("6. Restock Ingredient");
                 System.out.println("7. Exit");
+               
                 System.out.print("Enter your choice: ");
 
                 choice = scanner.nextInt();
@@ -68,6 +74,8 @@ public class RestockService implements BundleActivator {
                     case 6: // Restock ingredient
                         restockIngredient();
                         break;
+                 
+                    	
 
                     case 7:
                         System.out.println("Exiting Ingredient Management...");
@@ -164,11 +172,15 @@ public class RestockService implements BundleActivator {
             ingredientUsageService.addIngredient(ingredient, restockQuantity);
             System.out.println(ingredient + " restocked! New stock: " + ingredientUsageService.getIngredient(ingredient));
             System.out.println("=========================================");
+            
+           // ingredientUsageService.processIngredientUsage();
         } else {
             System.out.println(ingredient + " stock is sufficient. Current stock: " + currentStock);
             System.out.println("=========================================");
         }
     }
+    
+    
 
 
 }

@@ -8,9 +8,11 @@ public interface IngredientUsageService {
 	void deleteIngredient(String ingredient);
 	int getIngredient(String name);
 	void initializeStock();
+	
 	//To be used by order management 
 	boolean checkIngredientsForDish(String dishName);
     void useIngredientsForDish(String dishName);
 
+    void processIngredientUsage();
 
 }
