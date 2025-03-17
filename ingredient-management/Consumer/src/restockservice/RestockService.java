@@ -2,6 +2,7 @@ package restockservice;
 
 import ingredientusageservice.IngredientUsageService;
 
+
 import ordermanagementosgi.*;
 import java.util.Scanner;
 import org.osgi.framework.BundleActivator;
@@ -17,7 +18,7 @@ public class RestockService implements BundleActivator {
 
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("RestockService Starting...");
+		System.out.println("🔍 Searching for IngredientUsageService ...");
 
         // Get reference to IngredientUsageService
         ingredientServiceRef = context.getServiceReference(IngredientUsageService.class.getName());
@@ -26,24 +27,24 @@ public class RestockService implements BundleActivator {
 
         if (ingredientServiceRef != null) {
             ingredientUsageService = (IngredientUsageService) context.getService(ingredientServiceRef);
-            System.out.println("Connected to IngredientUsageService!");
+            System.out.println("✅ Connected to IngredientUsageService!");
 
             // Initialize stock when the service starts
             ingredientUsageService.initializeStock(); 
-            System.out.println("Stock initialized successfully.");
+            //System.out.println("Stock initialized successfully.");
             
 
             int choice;
             do {
             	System.out.println("=========================================");
                 System.out.println("\n****** Ingredient Management Menu ******");
-                System.out.println("1. Add Ingredient");
-                System.out.println("2. Update Ingredient Stock");
-                System.out.println("3. Use Ingredient");
-                System.out.println("4. Delete Ingredient");
-                System.out.println("5. Check Ingredient Stock");
-                System.out.println("6. Restock Ingredient");
-                System.out.println("7. Exit");
+                System.out.println("	1. Add Ingredient");
+                System.out.println("	2. Update Ingredient Stock");
+                System.out.println("	3. Use Ingredient");
+                System.out.println("	4. Delete Ingredient");
+                System.out.println("	5. Check Ingredient Stock");
+                System.out.println("	6. Restock Ingredient");
+                System.out.println("	7. Exit");
                
                 System.out.print("Enter your choice: ");
 

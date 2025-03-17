@@ -1,6 +1,7 @@
 package ingredientusageservice;
 
 import org.osgi.framework.BundleActivator;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -9,7 +10,7 @@ public class Activator implements BundleActivator {
 	private ServiceRegistration<?> serviceRegistration;
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Ingredient Management Producer (IngredientUsageService) Starting...");
+		System.out.println("Ingredient Usage Service Starting...");
 		
 		//Create and register the service
 		IngredientUsageService service = new IngredientUsageServiceImp();

@@ -1,16 +1,51 @@
 package ingredientusageservice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.osgi.service.component.annotations.Reference;
+import ordermanagementosgi.DeliveryOrder;
+import ordermanagementosgi.DineInOrder;
+import ordermanagementosgi.OrderService;
+//import ordermanagementosgi.DeliveryOrder;
 
 public class IngredientUsageServiceImp implements IngredientUsageService {
 
 	private Map<String, Integer> ingredientStock = new HashMap<>(); // Stores ingredient quantities
     private Map<String, Map<String, Integer>> dishIngredients = new HashMap<>(); // Dish-to-ingredients mapping
 
+    private OrderService orderService;
+    
+    @Reference
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    public void processIngredientUsage() {
+        System.out.println("🔎 Fetching all orders to track ingredient usage...");
+
+        // Fetch dine-in orders
+        List<DineInOrder> dineInOrders = orderService.getDineInOrders();
+        for (DineInOrder order : dineInOrders) {
+            System.out.println("🍽 Dine-In Order ID: " + order.getDineInOrderId() + " | Item: " + order.getItemName());
+            // You can now track ingredients used per order here
+        }
+
+        // Fetch delivery orders
+        List<DeliveryOrder> deliveryOrders = orderService.getDeliveryOrders();
+        for (DeliveryOrder order : deliveryOrders) {
+            System.out.println("🚚 Delivery Order ID: " + order.getDeliveryOrderId() + " | Item: " + order.getItemName());
+            // You can now track ingredients used per order here
+        }
+    }
+    
+    
+      
     public IngredientUsageServiceImp() {
     	initializeStock(); // hard coded values for ingredients 
         initializeDishIngredients(); // hard coded values for dish ingredients
+        
     }
 	
     // Define the dishes and their  required ingredients
@@ -112,7 +147,7 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
 	}
 
 	
-
+	
 	
 
 	
