@@ -119,4 +119,11 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getAllReservations() {
         return reservations;
     }
+    
+    @Override
+    public Reservation getSampleReservation() {
+        // Hardcoded sample reservation for Order Service usage
+        return new Reservation("Sample Customer", "0712345678", 3, 4, "2025-03-20", "dinner");
+    }
+
 }

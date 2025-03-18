@@ -9,4 +9,6 @@ public interface ReservationService {
 	String checkReservation(String customerName, String phone);
 	boolean updateReservation(String customerName, String phone, int newSeats, String newDate, String newMeal);
 	List<Reservation> getAllReservations();
+	
+	Reservation getSampleReservation();
 }
