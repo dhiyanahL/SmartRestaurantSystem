@@ -3,7 +3,9 @@ package deliverypublisher;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import ordermanagementosgi.OrderService;
+
+import ordermanagementproducer.OrderService;
+
 import org.osgi.framework.ServiceReference;
 
 public class DeliveryPublisherActivator implements BundleActivator {

@@ -7,6 +7,6 @@ Bundle-Activator: deliverypublisher.DeliveryPublisherActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: deliverypublisher
 Import-Package: deliveryapi,
- ordermanagementosgi,
+ ordermanagementproducer,
  org.osgi.framework;version="1.3.0"
 Export-Package: deliverypublisher

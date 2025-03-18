@@ -1,7 +1,7 @@
 package deliverysubscriber;
 
 import deliveryapi.DeliverySubscriber; // Import from deliveryapi
-import ordermanagementosgi.DeliveryOrder;
+import ordermanagementproducer.DeliveryOrder;
 
 public class DeliverySubscriberImpl implements DeliverySubscriber {
     @Override

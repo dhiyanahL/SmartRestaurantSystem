@@ -1,8 +1,8 @@
 package deliverypublisher;
 
-import ordermanagementosgi.DeliveryOrder;
 import java.util.ArrayList;
 import java.util.List;
+import ordermanagementproducer.DeliveryOrder;
 
 public class DeliveryPublisherImpl implements DeliveryPublisher {
     private List<DeliveryOrder> deliveryOrders;

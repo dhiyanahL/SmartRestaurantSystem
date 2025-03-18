@@ -111,6 +111,12 @@ public class IngredientUsageServiceImp implements IngredientUsageService {
 		return ingredientStock.getOrDefault(name, 0);
 	}
 
+	@Override
+	public void processIngredientUsage() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 	

@@ -5,6 +5,7 @@ import ordermanagementosgi.OrderService;
 import ordermanagementosgi.DineInOrder;
 import ordermanagementosgi.DeliveryOrder;
 import reservationmanagementosgi.ReservationService;
+import deliverypublisher.DeliveryPublisherImpl;
 import ingredientmanagementosgi.IngredientUsageService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -20,12 +21,15 @@ public class Activator implements BundleActivator {
 	private ServiceReference<?> serviceReference;
 	private ServiceReference<?> reservationServiceReference;
 	private ServiceReference<?> ingredientServiceReference;
+	private DeliveryPublisherImpl deliveryPublisher; // DeliveryPublisher instance
+
 
 	static BundleContext getContext() {
 		return context;
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
+		Activator.context = bundleContext;
 		System.out.println("🔍 Searching for OrderService...");
         serviceReference = bundleContext.getServiceReference(OrderService.class.getName());
         reservationServiceReference = bundleContext.getServiceReference(ReservationService.class.getName());
@@ -174,6 +178,18 @@ public class Activator implements BundleActivator {
 				        	boolean deliveryDeleted = orderService.deleteDeliveryOrder(deletingDeliveryId);
 				            System.out.println(deliveryDeleted ? "🗑️ Delivery Order Deleted." : "❌ Delivery Order not found.");
 				            break;
+				        
+				        case 11:
+	                    	System.out.println("👋 Exiting Order Management.");
+	                        // Fetch the delivery orders only after exiting
+	                        List<DeliveryOrder> deliveryOrder = orderService.getDeliveryOrders();
+	                        if (deliveryPublisher != null) {
+	                            ((DeliveryPublisherImpl) deliveryPublisher).setDeliveryOrders(deliveryOrder);  // Set the delivery orders
+	                            deliveryPublisher.deliverOrder();  // Trigger delivery
+	                        } else {
+	                            System.out.println("❌ DeliveryPublisher is not available.");
+	                        }
+	                        return; // Exit the loop and end the service
 				        	
 				        	
 				       
@@ -189,6 +205,7 @@ public class Activator implements BundleActivator {
 
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+		System.out.println("OrderConsumer bundle stopped.");
 	}
 
 }

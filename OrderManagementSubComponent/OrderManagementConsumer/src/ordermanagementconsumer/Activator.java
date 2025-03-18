@@ -1,5 +1,7 @@
 package ordermanagementconsumer;
 
+import deliverypublisher.DeliveryPublisher;
+import deliverypublisher.DeliveryPublisherImpl;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,10 +17,8 @@ public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	private ServiceReference<?> serviceReference;
-
-	static BundleContext getContext() {
-		return context;
-	}
+	private ServiceReference<?> deliveryPublisherReference;
+	private DeliveryPublisherImpl deliveryPublisher; // DeliveryPublisher instance
 
 	public void start(BundleContext bundleContext) throws Exception {
 		System.out.println("🔍 Searching for OrderService...");
@@ -29,9 +29,20 @@ public class Activator implements BundleActivator {
             System.out.println("✅ OrderService Found!");
             
           
-          //IngredientUsageService ingredientUsageService = (IngredientUsageService) bundleContext.getService(ingredientServiceReference);
+          //IngredientUsageService ingredientUsageService = (IngredientUsageService) bundleContext.getService(ingredientServiceReference);           
 
-            try (Scanner scanner = new Scanner(System.in)) {
+            try {
+            	Scanner scanner = new Scanner(System.in);
+            	// Wait for DeliveryPublisher service to be available
+                System.out.println("🔍 Searching for DeliveryPublisher...");
+                deliveryPublisherReference = bundleContext.getServiceReference(DeliveryPublisher.class.getName());
+                if (deliveryPublisherReference != null) {
+                    deliveryPublisher = (DeliveryPublisherImpl) bundleContext.getService(deliveryPublisherReference);
+                    System.out.println("✅ DeliveryPublisher Found!");
+                } else {
+                    System.out.println("❌ DeliveryPublisher Not Found. Exiting...");
+                    return;
+                }
 				while (true) {
 				    System.out.println("\n=== Order Management ===");
 				    System.out.println("1. Create Dine In Order");
@@ -163,6 +174,18 @@ public class Activator implements BundleActivator {
 				        	boolean deliveryDeleted = orderService.deleteDeliveryOrder(deletingDeliveryId);
 				            System.out.println(deliveryDeleted ? "🗑️ Delivery Order Deleted." : "❌ Delivery Order not found.");
 				            break;
+				        
+				        case 11:
+	                    	System.out.println("👋 Exiting Order Management.");
+	                        // Fetch the delivery orders only after exiting
+	                        List<DeliveryOrder> deliveryOrder = orderService.getDeliveryOrders();
+	                        if (deliveryPublisher != null) {
+	                            ((DeliveryPublisherImpl) deliveryPublisher).setDeliveryOrders(deliveryOrder);  // Set the delivery orders
+	                            deliveryPublisher.deliverOrder();  // Trigger delivery
+	                        } else {
+	                            System.out.println("❌ DeliveryPublisher is not available.");
+	                        }
+	                        return; // Exit the loop and end the service
 				        	
 				        	
 				       
@@ -170,6 +193,8 @@ public class Activator implements BundleActivator {
 				            System.out.println("❌ Invalid choice. Try again.");
 				    }
 				}
+			} finally {
+				
 			}
         } else {
             System.out.println("❌ OrderService Not Found in OSGi Registry.");

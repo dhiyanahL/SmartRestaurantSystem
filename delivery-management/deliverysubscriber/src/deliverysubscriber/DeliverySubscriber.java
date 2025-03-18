@@ -1,6 +1,6 @@
 package deliverysubscriber;
 
-import ordermanagementosgi.DeliveryOrder;
+import ordermanagementproducer.DeliveryOrder;
 
 public interface DeliverySubscriber {
 	

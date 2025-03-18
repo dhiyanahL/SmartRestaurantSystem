@@ -1035,9 +1035,15 @@
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
         <setEntry value="IngredientManagementOsgi@default:default"/>
+        <setEntry value="IngredientUsageService@default:default"/>
         <setEntry value="OrderManagementOsgi@default:default"/>
         <setEntry value="OrderManagementOsgiConsumer@default:default"/>
         <setEntry value="ReservationManagementOsgi@default:default"/>
+        <setEntry value="RestockService@default:default"/>
+        <setEntry value="deliveryapi@default:default"/>
+        <setEntry value="deliverypublisher@default:default"/>
+        <setEntry value="deliverysubscriber@default:default"/>
+        <setEntry value="main@default:default"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="false"/>
     <booleanAttribute key="tracing" value="false"/>

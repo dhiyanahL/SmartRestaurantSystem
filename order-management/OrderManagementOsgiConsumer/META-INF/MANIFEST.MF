@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ordermanagementosgiconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: OrderManagementOsgiConsumer
-Import-Package: ordermanagementosgi,
+Import-Package: deliverypublisher,
+ ordermanagementosgi,
  org.osgi.framework;version="1.3.0",
  reservationmanagementosgi
 Require-Bundle: OrderManagementOsgi;bundle-version="1.0.0",
