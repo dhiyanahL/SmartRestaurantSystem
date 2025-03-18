@@ -18,7 +18,7 @@ public class RestockService implements BundleActivator {
 
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("🔍 Searching for IngredientUsageService ...");
+		System.out.println("Restock Service Starting ...");
 
         // Get reference to IngredientUsageService
         ingredientServiceRef = context.getServiceReference(IngredientUsageService.class.getName());
