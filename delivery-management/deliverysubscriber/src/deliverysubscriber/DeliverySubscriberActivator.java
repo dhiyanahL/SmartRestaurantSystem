@@ -7,6 +7,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 import deliveryapi.DeliverySubscriber;
+import deliverypublisher.DeliveryPublisherImpl;
 import deliveryapi.DeliveryPublisher;
 
 public class DeliverySubscriberActivator implements BundleActivator {
@@ -27,10 +28,11 @@ public class DeliverySubscriberActivator implements BundleActivator {
                 DeliveryPublisher deliveryPublisher = context.getService(reference);
 
                 // Register the DeliverySubscriber service after DeliveryPublisher is available
-                DeliverySubscriberImpl deliverySubscriber = new DeliverySubscriberImpl();
+                DeliverySubscriberImpl deliverySubscriber = new DeliverySubscriberImpl(deliveryPublisher);
                 serviceRegistration = context.registerService(DeliverySubscriber.class, deliverySubscriber, null);
-                System.out.println("✅ DeliverySubscriber Service Registered.");
+            
                 
+                System.out.println("✅ DeliverySubscriber Service Registered.");
                 return super.addingService(reference); // Continue tracking the service
             }
 

@@ -3,9 +3,9 @@ package main;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 import java.util.Scanner;
-
 
 public class MainActivator implements BundleActivator {
 
@@ -18,9 +18,12 @@ public class MainActivator implements BundleActivator {
     public void start(BundleContext bundleContext) throws Exception {
         MainActivator.context = bundleContext;
 
+        // Ensure all required bundles are resolved
+        resolveBundles();
+
         // Display main menu to the user
         showMenu();
-
+        
         // Handle the user input and select corresponding options
         handleUserChoice();
     }
@@ -40,34 +43,40 @@ public class MainActivator implements BundleActivator {
 
     private void handleUserChoice() {
         Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
-        scanner.nextLine();  // Consume the newline character
 
-        switch (choice) {
-            case 1:
-                System.out.println("You selected Reservation.");
-                startBundle("reservationmanagementosgi");  // Start Reservation bundle
-                break;
+        while (true) {  // Loop to keep showing the menu until the user exits
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline character
 
-            case 2:
-                System.out.println("You selected Order.");
-                startBundle("ordermanagementosgiconsumer");  // Start OrderConsumer bundle
-                break;
+            switch (choice) {
+                case 1:
+                    System.out.println("You selected Reservation.");
+                    startBundle("ReservationManagementOsgi");  // Start Reservation bundle
+                    break;
 
-            case 3:
-                System.out.println("You selected Inventory.");
-                startBundle("inventorymanagementosgi");  // Start Inventory bundle
-                break;
+                case 2:
+                    System.out.println("You selected Order.");
+                    startBundle("OrderManagementConsumer");  // Start OrderConsumer bundle
+                    break;
 
-            case 4:
-                System.out.println("Exiting program...");
-                System.exit(0);
-                break;
+                case 3:
+                    System.out.println("You selected Inventory.");
+                    startBundle("IngredientManagementOsgi");  // Start Inventory bundle
+                    break;
 
-            default:
-                System.out.println("Invalid option. Please try again.");
-                showMenu();
-                handleUserChoice();
+                case 4:
+                    System.out.println("Exiting program...");
+                    System.exit(0);  // Terminate the program
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    showMenu();  // Redisplay the menu
+                    continue;  // Ensure we don't skip the rest of the logic after an invalid choice
+            }
+
+            // After performing the action, ask for the user's choice again
+            showMenu();  // Display the menu again
         }
     }
 
@@ -79,10 +88,16 @@ public class MainActivator implements BundleActivator {
         for (Bundle bundle : bundles) {
             if (bundle.getSymbolicName().equals(symbolicName)) {
                 try {
-                    bundle.start();  // Start the bundle
+                    // Check if the bundle is already resolved
+                    if (bundle.getState() != Bundle.RESOLVED) {
+                        System.out.println("Resolving " + symbolicName + " bundle...");
+                        bundle.start();  // Starting the bundle will resolve it if necessary
+                    } else {
+                        System.out.println(symbolicName + " bundle is already resolved.");
+                    }
                     System.out.println(symbolicName + " bundle started.");
                     break;
-                } catch (Exception e) {
+                } catch (BundleException e) {
                     System.out.println("Error starting the " + symbolicName + " bundle.");
                     e.printStackTrace();
                 }
@@ -90,19 +105,16 @@ public class MainActivator implements BundleActivator {
         }
     }
 
-    private void startOrderConsumer() {
-        System.out.println("Starting Order Management...");
-
-        // Start the OrderConsumer bundle when the user selects "Order"
+    private void resolveBundles() {
+        // Iterate over all bundles and resolve them if needed
         Bundle[] bundles = context.getBundles();
         for (Bundle bundle : bundles) {
-            if (bundle.getSymbolicName().equals("ordermanagementosgiconsumer")) {
+            if (bundle.getState() == Bundle.INSTALLED) {
                 try {
-                    bundle.start();  // Start the OrderConsumer bundle
-                    System.out.println("OrderConsumer bundle started.");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Error starting the OrderConsumer bundle.");
+                    System.out.println("Resolving bundle: " + bundle.getSymbolicName());
+                    bundle.start();  // Start the bundle to resolve it
+                } catch (BundleException e) {
+                    System.out.println("Error resolving the " + bundle.getSymbolicName() + " bundle.");
                     e.printStackTrace();
                 }
             }

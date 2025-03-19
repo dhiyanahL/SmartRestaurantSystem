@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ordermanagementconsumer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: OrderManagementConsumer
-Import-Package: deliverypublisher,
+Import-Package: deliveryproducer,
  ordermanagementproducer,
  org.osgi.framework;version="1.3.0"
 Require-Bundle: OrderManagementProducer;bundle-version="1.0.0"

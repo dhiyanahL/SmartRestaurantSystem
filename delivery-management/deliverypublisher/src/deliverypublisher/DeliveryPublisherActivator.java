@@ -12,6 +12,7 @@ public class DeliveryPublisherActivator implements BundleActivator {
 
     private ServiceRegistration<?> serviceRegistration;
     private static boolean publisherReady = false;  // Flag to signal when publisher is ready
+    private static DeliveryPublisherImpl deliveryPublisherImpl = null;
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -31,11 +32,14 @@ public class DeliveryPublisherActivator implements BundleActivator {
         // Once OrderService is found, get the service instance
         OrderService orderService = context.getService(serviceReference);
 
-        // Create an instance of DeliveryPublisherImpl with OrderService
-        DeliveryPublisherImpl deliveryPublisher = new DeliveryPublisherImpl();
-
+        // Check if we already have an instance of DeliveryPublisherImpl
+        if (deliveryPublisherImpl == null) {
+            // Create an instance of DeliveryPublisherImpl with OrderService
+            deliveryPublisherImpl = new DeliveryPublisherImpl();
+        }
+        
         // Register the DeliveryPublisher service
-        serviceRegistration = context.registerService(new String[] {DeliveryPublisher.class.getName()}, deliveryPublisher, null);
+        serviceRegistration = context.registerService(new String[] {DeliveryPublisher.class.getName()}, deliveryPublisherImpl, null);
 
         // Signal that the publisher is ready
         publisherReady = true;
@@ -70,5 +74,9 @@ public class DeliveryPublisherActivator implements BundleActivator {
     // A method to get the status of the publisher's readiness
     public static boolean isPublisherReady() {
         return publisherReady;
+    }
+    
+    public static DeliveryPublisherImpl getDeliveryPublisherImpl() {
+    	return deliveryPublisherImpl;
     }
 }

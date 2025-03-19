@@ -1,7 +1,6 @@
 package ordermanagementconsumer;
 
-import deliverypublisher.DeliveryPublisher;
-import deliverypublisher.DeliveryPublisherImpl;
+import deliveryproducer.DeliveryProducer;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,15 +10,11 @@ import org.osgi.framework.ServiceReference;
 
 import ordermanagementproducer.*;
 
-
-
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	private ServiceReference<?> serviceReference;
-	private ServiceReference<?> deliveryPublisherReference;
-	private DeliveryPublisherImpl deliveryPublisher; // DeliveryPublisher instance
-
+	
 	public void start(BundleContext bundleContext) throws Exception {
 		System.out.println("🔍 Searching for OrderService...");
         serviceReference = bundleContext.getServiceReference(OrderService.class.getName());
@@ -33,16 +28,7 @@ public class Activator implements BundleActivator {
 
             try {
             	Scanner scanner = new Scanner(System.in);
-            	// Wait for DeliveryPublisher service to be available
-                System.out.println("🔍 Searching for DeliveryPublisher...");
-                deliveryPublisherReference = bundleContext.getServiceReference(DeliveryPublisher.class.getName());
-                if (deliveryPublisherReference != null) {
-                    deliveryPublisher = (DeliveryPublisherImpl) bundleContext.getService(deliveryPublisherReference);
-                    System.out.println("✅ DeliveryPublisher Found!");
-                } else {
-                    System.out.println("❌ DeliveryPublisher Not Found. Exiting...");
-                    return;
-                }
+            	
 				while (true) {
 				    System.out.println("\n=== Order Management ===");
 				    System.out.println("1. Create Dine In Order");
@@ -100,7 +86,21 @@ public class Activator implements BundleActivator {
 				            String deliveryReciver= scanner.nextLine();
 				            System.out.println("Enter Delivery Address");
 				            String phoneNum = scanner.nextLine();
+				            
+				         // Create the delivery order
+				            DeliveryOrder deliveryOrder = new DeliveryOrder(0, deliveryItemName, deliveryQuantity, deliveryName, deliveryReciver, phoneNum);
+				            
 				            orderService.createDeliveryOrder(new DeliveryOrder(0, deliveryItemName, deliveryQuantity,  deliveryName, deliveryReciver,phoneNum));
+				            
+				         // Pass the delivery order to DeliveryProducer
+				            ServiceReference<?> deliveryProducerReference = bundleContext.getServiceReference(DeliveryProducer.class.getName());
+				            if (deliveryProducerReference != null) {
+				                DeliveryProducer deliveryProducer = (DeliveryProducer) bundleContext.getService(deliveryProducerReference);
+				                deliveryProducer.addDeliveryOrder(deliveryOrder);
+				                System.out.println("📦 Delivery Order Exported to DeliveryProducer.");
+				            } else {
+				                System.out.println("❌ DeliveryProducer Not Found. Order not exported.");
+				            }
 				            break;
 				            
 				        case 3:
@@ -177,18 +177,8 @@ public class Activator implements BundleActivator {
 				        
 				        case 11:
 	                    	System.out.println("👋 Exiting Order Management.");
-	                        // Fetch the delivery orders only after exiting
-	                        List<DeliveryOrder> deliveryOrder = orderService.getDeliveryOrders();
-	                        if (deliveryPublisher != null) {
-	                            ((DeliveryPublisherImpl) deliveryPublisher).setDeliveryOrders(deliveryOrder);  // Set the delivery orders
-	                            deliveryPublisher.deliverOrder();  // Trigger delivery
-	                        } else {
-	                            System.out.println("❌ DeliveryPublisher is not available.");
-	                        }
 	                        return; // Exit the loop and end the service
-				        	
-				        	
-				       
+				        					       
 				        default:
 				            System.out.println("❌ Invalid choice. Try again.");
 				    }
