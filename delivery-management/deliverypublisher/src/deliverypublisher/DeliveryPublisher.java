@@ -1,15 +1,14 @@
-// DeliveryPublisher.java (Interface)
-package deliverypublisher;
+package deliveryproducer;
 
 import ordermanagementproducer.DeliveryOrder;
-import java.util.List;
 
-public interface DeliveryPublisher {
-	void assignDeliveryPerson(String deliveryPerson);
+public interface DeliveryProducer {
+    void assignDeliveryPerson(String deliveryPerson);
     double calculateDeliveryCharges(int totalQuantity);
     int calculateDeliveryTime(int totalQuantity);
     void startDelivery();
     void endDelivery();
     void generateDeliveryReport();
     void addDeliveryOrder(DeliveryOrder deliveryOrder); 
+    
 }
