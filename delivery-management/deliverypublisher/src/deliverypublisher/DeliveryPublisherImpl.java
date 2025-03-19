@@ -7,65 +7,62 @@ import ordermanagementproducer.DeliveryOrder;
 
 public class DeliveryPublisherImpl implements DeliveryPublisher {
 	
-	private List<DeliveryOrder> deliveryOrders = new ArrayList<>();
-	
-	// Constants for delivery calculations
-    private static final double BASE_DELIVERY_FEE = 5.0;  // Fixed fee per order
-    private static final double DISTANCE_FEE_PER_MILE = 2.0;  // Fee per mile
-    private static final double ITEM_FEE_PER_ITEM = 0.5;  // Fee per item
+	 private List<DeliveryOrder> deliveryOrders = new ArrayList<>();
+	    private String deliveryPerson;
 
-    @Override
-    public int calculateTotalQuantity(List<DeliveryOrder> orders) {
-        int totalItems = 0;
-        for (DeliveryOrder order : orders) {
-            totalItems += order.getQuantity();  // Add quantity for each order
-        }
-        return totalItems;
-    }
+	    @Override
+	    public void addDeliveryOrder(DeliveryOrder deliveryOrder) {
+	        if (deliveryOrder == null) {
+	            System.out.println("❌ Error: Delivery order is null.");
+	            return;
+	        }
 
-    @Override
-    public int calculateDeliveryTime(List<DeliveryOrder> orders) {
-        int totalTime = 0;
-        int timePerItem = 10;  // 10 minutes per item for delivery
+	        // Add the delivery order to the list
+	        deliveryOrders.add(deliveryOrder);
+	        System.out.println("📦 Delivery Order Added: " + deliveryOrder);
+	    }
 
-        for (DeliveryOrder order : orders) {
-            totalTime += order.getQuantity() * timePerItem;  // Multiply by quantity for each order
-        }
-        return totalTime;
-    }
+	    @Override
+	    public void assignDeliveryPerson(String deliveryPerson) {
+	        this.deliveryPerson = deliveryPerson;
+	        System.out.println("🚴 Delivery Person Assigned: " + deliveryPerson);
+	    }
 
-    @Override
-    public double calculateDeliveryPrice(List<DeliveryOrder> orders, double distance) {
-        double totalPrice = 0.0;
+	    @Override
+	    public double calculateDeliveryCharges(int totalQuantity) {
+	        // Example: $2 per item
+	        return totalQuantity * 2.0;
+	    }
 
-        for (DeliveryOrder order : orders) {
-            double distanceFee = distance * DISTANCE_FEE_PER_MILE;  // Fee based on distance
-            double itemFee = order.getQuantity() * ITEM_FEE_PER_ITEM;  // Fee based on quantity of items
+	    @Override
+	    public int calculateDeliveryTime(int totalQuantity) {
+	        // Example: 10 minutes per item
+	        return totalQuantity * 10;
+	    }
 
-            // Calculate total delivery price
-            totalPrice += BASE_DELIVERY_FEE + distanceFee + itemFee;
-        }
-        return totalPrice;
-    }
+	    @Override
+	    public void startDelivery() {
+	        System.out.println("🚚 Delivery Started by " + deliveryPerson);
+	        try {
+	            // Simulate delivery time
+	            Thread.sleep(5000); // 5 seconds delay
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-    @Override
-    public void generateReport(List<DeliveryOrder> orders, double distance) {
-        int totalItems = calculateTotalQuantity(orders);
-        int totalTime = calculateDeliveryTime(orders);
-        double totalPrice = calculateDeliveryPrice(orders, distance);
+	    @Override
+	    public void endDelivery() {
+	        System.out.println("✅ Delivery Completed by " + deliveryPerson);
+	    }
 
-        // Print the report
-        System.out.println("===== Delivery Report =====");
-        System.out.println("Total Items Ordered: " + totalItems);
-        System.out.println("Total Estimated Time: " + totalTime + " minutes");
-        System.out.println("Total Estimated Delivery Price: $" + totalPrice);
-        System.out.println("---------------------------");
-    }
-    
-    public void receiveDeliveryOrders(List<DeliveryOrder> orders) {
-        // Store the received orders in the internal list
-        deliveryOrders.addAll(orders);
-        System.out.println("📦 Delivery orders received and stored.");
-    }
-    
+	    @Override
+	    public void generateDeliveryReport() {
+	        System.out.println("\n=== Delivery Report ===");
+	        System.out.println("Delivery Person: " + deliveryPerson);
+	        int totalQuantity = deliveryOrders.stream().mapToInt(DeliveryOrder::getQuantity).sum();
+	        System.out.println("Total Quantity: " + totalQuantity);
+	        System.out.println("Delivery Charges: $" + calculateDeliveryCharges(totalQuantity));
+	        System.out.println("Estimated Delivery Time: " + calculateDeliveryTime(totalQuantity) + " minutes");
+	    }
 }
