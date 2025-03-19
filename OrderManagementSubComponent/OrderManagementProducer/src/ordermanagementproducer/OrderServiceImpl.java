@@ -11,6 +11,11 @@ public class OrderServiceImpl implements OrderService {
 	
 	private int nextOrderId = 1;
 
+	public OrderServiceImpl() {
+		deliveryOrders.add(new DeliveryOrder(nextOrderId++, "Pizza", 2, "John Doe", "0771234567", "123 Main St, Cityville")); 
+	}
+
+
 	@Override
     public void createDineInOrder(DineInOrder dineInOrder) {
         dineInOrder.setDineInOrderId(nextOrderId++);
