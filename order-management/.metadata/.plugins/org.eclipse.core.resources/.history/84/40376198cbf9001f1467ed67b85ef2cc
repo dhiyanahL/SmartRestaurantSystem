@@ -1,5 +1,0 @@
-package ordermanagementosgi;
-
-public interface OrderService {
-
-}
