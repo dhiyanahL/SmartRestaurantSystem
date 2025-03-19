@@ -1,67 +1,66 @@
 package deliverysubscriber;
 
+import java.util.List;
+import java.util.Scanner;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
-import deliveryapi.DeliverySubscriber;
 import deliverypublisher.DeliveryPublisherImpl;
-import deliveryapi.DeliveryPublisher;
+import ordermanagementproducer.DeliveryOrder;
+import ordermanagementproducer.OrderService;
+import deliverypublisher.DeliveryPublisher;
 
 public class DeliverySubscriberActivator implements BundleActivator {
-
-    private ServiceRegistration<DeliverySubscriber> serviceRegistration;
-    private ServiceTracker<DeliveryPublisher, DeliveryPublisher> deliveryPublisherTracker;
+	
+	private ServiceReference<?> orderServiceReference;
+    private ServiceReference<?> deliveryProducerReference;
 
     @Override
-    public void start(BundleContext context) throws Exception {
-        System.out.println("DeliverySubscriber Service Starting...");
+    public void start(BundleContext bundleContext) throws Exception {
+        System.out.println("🔍 Searching for OrderService and DeliveryProducer...");
 
-        // Initialize the ServiceTracker for DeliveryPublisher
-        deliveryPublisherTracker = new ServiceTracker<DeliveryPublisher, DeliveryPublisher>(context, DeliveryPublisher.class, null) {
-            @Override
-            public DeliveryPublisher addingService(ServiceReference<DeliveryPublisher> reference) {
-                // When the DeliveryPublisher service is available, start the DeliverySubscriber
-                System.out.println("✅ DeliveryPublisher found, registering DeliverySubscriber.");
-                DeliveryPublisher deliveryPublisher = context.getService(reference);
+        // Get OrderService
+        orderServiceReference = bundleContext.getServiceReference(OrderService.class.getName());
+        if (orderServiceReference == null) {
+            System.out.println("❌ OrderService Not Found.");
+            return;
+        }
+        OrderService orderService = (OrderService) bundleContext.getService(orderServiceReference);
 
-                // Register the DeliverySubscriber service after DeliveryPublisher is available
-                DeliverySubscriberImpl deliverySubscriber = new DeliverySubscriberImpl(deliveryPublisher);
-                serviceRegistration = context.registerService(DeliverySubscriber.class, deliverySubscriber, null);
-            
-                
-                System.out.println("✅ DeliverySubscriber Service Registered.");
-                return super.addingService(reference); // Continue tracking the service
-            }
+        // Get DeliveryProducer
+        deliveryProducerReference = bundleContext.getServiceReference(DeliveryPublisher.class.getName());
+        if (deliveryProducerReference == null) {
+            System.out.println("❌ DeliveryProducer Not Found.");
+            return;
+        }
+        DeliveryPublisher deliveryProducer = (DeliveryPublisher) bundleContext.getService(deliveryProducerReference);
 
-            @Override
-            public void removedService(ServiceReference<DeliveryPublisher> reference, DeliveryPublisher service) {
-                // Unregister DeliverySubscriber when DeliveryPublisher is no longer available
-                if (serviceRegistration != null) {
-                    serviceRegistration.unregister();
-                    System.out.println("📢 DeliverySubscriber Service Unregistered.");
-                }
-                super.removedService(reference, service);
-            }
-        };
+        // Start Delivery Process
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Delivery Person Name: ");
+        String deliveryPerson = scanner.nextLine();
+        deliveryProducer.assignDeliveryPerson(deliveryPerson);
 
-        // Start tracking the DeliveryPublisher service
-        deliveryPublisherTracker.open();
+        // Get Delivery Orders from OrderService
+        List<DeliveryOrder> deliveryOrders = orderService.getDeliveryOrders();
+        for (DeliveryOrder order : deliveryOrders) {
+            deliveryProducer.addDeliveryOrder(order);
+        }
+
+        // Generate Report and Start Delivery
+        deliveryProducer.generateDeliveryReport();
+        deliveryProducer.startDelivery();
+        deliveryProducer.endDelivery();
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
-        System.out.println("Stopping DeliverySubscriber Service...");
-
-        // Unregister the service if necessary
-        if (serviceRegistration != null) {
-            serviceRegistration.unregister();
-            System.out.println("📢 DeliverySubscriber Service Unregistered.");
-        }
-
-        // Close the ServiceTracker when the bundle is stopped
-        deliveryPublisherTracker.close();
+    public void stop(BundleContext bundleContext) throws Exception {
+        bundleContext.ungetService(orderServiceReference);
+        bundleContext.ungetService(deliveryProducerReference);
+        System.out.println("🚪 DeliveryConsumer Stopped.");
     }
 }
