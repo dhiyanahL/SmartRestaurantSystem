@@ -1,16 +1,14 @@
-package deliverypublisher;
+package deliveryproducer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-
 import ordermanagementproducer.OrderService;
 
-import org.osgi.framework.ServiceReference;
+public class DeliveryProducerActivator implements BundleActivator {
 
-public class DeliveryPublisherActivator implements BundleActivator {
-
-	private ServiceRegistration<DeliveryPublisher> registration;
+    private ServiceRegistration<DeliveryProducer> registration;
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
@@ -22,8 +20,8 @@ public class DeliveryPublisherActivator implements BundleActivator {
             System.out.println("✅ OrderService Found. Registering DeliveryProducer.");
 
             // Register the DeliveryProducer service
-            DeliveryPublisher deliveryProducer = new DeliveryPublisherImpl();
-            registration = bundleContext.registerService(DeliveryPublisher.class, deliveryProducer, null);
+            DeliveryProducer deliveryProducer = new DeliveryProducerImpl();
+            registration = bundleContext.registerService(DeliveryProducer.class, deliveryProducer, null);
             System.out.println("✅ DeliveryProducer Service Registered.");
         } else {
             System.out.println("❌ OrderService Not Found. DeliveryProducer not started.");
